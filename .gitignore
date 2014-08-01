@@ -2,9 +2,12 @@
 # Stuff added manually
 # =========================
 
-#ignore test result output
+# Ignore test result output
 /Test/*.xml
 Test.xml
+
+# InstallUtil logs
+InstallUtil.InstallLog
 
 # =========================
 # Auto-generated stuff from VS

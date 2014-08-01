@@ -62,7 +62,7 @@ task CheckAdmin {
     else
     {
         Write-Host Not running as admin. Failing the PSake build. Please run as admin.
-        fail
+        throw "ERROR: Need to run build script as admin"
     }
 }
 
@@ -88,7 +88,7 @@ task Unregister {
     {
         #it's already registered, need to unregister
         Write-Host Unregistering the previous version of PoShDriver from PowerShell
-        exec { C:\Windows\Microsoft.net\Framework\V4.0.30319\installutil /uninstall ($base_dir + "\PoShDriver\bin\Debug\PoShDriver.dll") }
+        exec { C:\Windows\Microsoft.net\Framework\V4.0.30319\installutil /uninstall ($base_dir + "\PowerShellDriver\bin\Debug\PoShDriver.dll") }
     }
     Else
     {
@@ -100,5 +100,5 @@ task Unregister {
 task Register {
     #register the new DLL as a snap-in on system powershell
     Write-Host Registering the newly-built PoShDriver DLL to PowerShell...
-    exec {C:\Windows\Microsoft.net\Framework\V4.0.30319\installutil ($base_dir + "\PoShDriver\bin\Debug\PoShDriver.dll") }
+    exec {C:\Windows\Microsoft.net\Framework\V4.0.30319\installutil ($base_dir + "\PowerShellDriver\bin\Debug\PoShDriver.dll") }
 }

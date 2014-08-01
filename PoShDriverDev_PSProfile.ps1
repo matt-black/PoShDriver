@@ -19,4 +19,4 @@ Import-Module $rootDir\packages\Pester.2.1.0\tools\Pester.psm1
 #add Chromedriver to the path
 $env:Path += [System.String]::Format(";{0}\packages\WebDriver.ChromeDriver.win32.2.10.0.0\content", $rootDir)
 
-#Clear-Host
+Clear-Host
