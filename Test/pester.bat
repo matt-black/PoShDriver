@@ -14,7 +14,7 @@ if '%1'=='help' goto usage
 
 :starttests
 @%SystemRoot%\syswow64\WindowsPowerShell\v1.0\powershell.exe -NonInteractive -NoProfile -ExecutionPolicy Bypass -Command ^
- "& Import-Module '%PROJ_ROOT%\packages\Pester.3.0.0-beta\tools\Pester.psm1'; & Add-Type -Path '%PROJ_ROOT%\packages\Selenium.WebDriver.2.42.0\lib\net40\WebDriver.dll' ; & Add-PSSnapin PoShDriver; & { Set-StrictMode -Version Latest; Invoke-Pester -Path %DIR% -OutputXml Test.xml -EnableExit %ARGS%}"
+ "& Invoke-Expression %PROJ_ROOT%\PoShDriverDev_PSProfile.ps1; & { Set-StrictMode -Version Latest; Invoke-Pester -Path %DIR% -OutputXml Test.xml -EnableExit %ARGS%}"
 
 goto finish
 
