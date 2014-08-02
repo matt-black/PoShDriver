@@ -49,8 +49,66 @@
         #close out the driver
         $driver.Quit()
     }
+    Context "Checking WebElement behavior" {
+        #setup for tests
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
+        $topLevelElem = $driver.FindElementByClassName("saucelabsrip") #should only look in saucelabsrip div
+        
+        It "finds elements beneath specified element" {
+            $sauceh3 = $topLevelElem | Find-WebElement "h3" -ByTagName
+            $sauceh3.Text | Should Be "This section is ripped from this page"
+        }
+
+        #close the driver
+        $driver.Quit()
+    }
+    Context "Checking error handling" {
+        #setup for tests
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
+        
+        #tests
+        It "cannot find by two By's" {
+            PesterThrow {
+                $driver | Find-WebElement "h3" -ByTagName -ByName
+            } | Should Be $true
+        }
+        It "should throw if can't find an element" {
+            PesterThrow {
+                $driver | Find-WebElement "h20" -ByTagName
+            } | Should Be $true
+        }
+
+        #close the driver
+        $driver.Quit()
+    }
 }
 
 Describe "Find-WebElements Cmdlet" {
+    #setup the driver
+    $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+    $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+    $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
 
+    #test functionality
+    It "returns a collection identical to dotNet" {
+        $elemList_dotNet = $driver.FindElementsByClassName("hobby")
+        $elemList_poSh = $driver | Find-WebElements "hobby" -ByClassName
+        $elemList_poSh | Should Be $elemList_dotNet
+    }
+    It "can return N number of elements" {
+        $allElemList = $driver | Find-WebElements "hobby" -ByClassName -N 2
+        $allElemList.Count | Should Be 2
+    }
+    It "shouldn't return more elements than exist" {
+        PesterThrow {
+            $driver | Find-WebElements "hobby" -ByClassName -N 50
+        } | Should Be $true
+    }
+
+    #close out the driver
+    $driver.Quit()
 }

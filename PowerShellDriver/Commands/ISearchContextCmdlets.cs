@@ -144,9 +144,6 @@ namespace PowerShellDriver.Commands
                 case "XPath":
                     _by = By.XPath(_identifier);
                     break;
-                default:
-                    // should only get here if ParameterSetName isn't implemented properly
-                    throw new Exception("did not specify a valid ParameterSet");
             }
         }
     }
@@ -155,27 +152,53 @@ namespace PowerShellDriver.Commands
     [Cmdlet(VerbsCommon.Find, "WebElements")]
     public class FindElementsCmdlet : AbstractFindElemCmdlet
     {
+        /// <summary>
+        /// The number of <see cref="IWebElements"/> to find
+        /// </summary>
         [Parameter(Mandatory=false)]
-        public bool FirstOnly
+        [ValidateRange(1,100)]
+        public int N
         {
-            get { return _first; }
-            set { _first = value; }
+            get { return _n; }
+            set { _n = value; }
         }
-        private bool _first;
+        private int _n = -1;
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
         }
         protected override void ProcessRecord()
         {
-            switch (_first)
+            if (_n < 0)
             {
-                case true:
-                    this.WriteObject(_searchContext.FindElement(_by));
-                    break;
-                case false:
-                    this.WriteObject(_searchContext.FindElements(_by));
-                    break;
+                this.WriteObject(_searchContext.FindElements(_by));
+                return;
+            }
+            else //user set a value for the number of elements to return
+            {
+                var allElemList = _searchContext.FindElements(_by);
+                try
+                {
+                    //slice the collection and return first N elements
+                    List<IWebElement> elemList = new List<IWebElement>();
+                    for (int i = 0; i < _n; i++)
+                    {
+                        elemList.Add(allElemList[i]);
+                    }
+                    
+                    //convert to ReadOnlyCollection and write to pipeline
+                    var returnList = new ReadOnlyCollection<IWebElement>(elemList);
+                    this.WriteObject(returnList);
+                }
+                catch (Exception ex) //if _n > allElemList.Length
+                {
+                    //form the error record and write to host
+                    ErrorRecord err = new ErrorRecord(ex, "find-webelements", ErrorCategory.InvalidArgument, allElemList);
+                    this.WriteError(err);
+
+                    throw (ex); //rethrow
+                }
             }
         }
     }
