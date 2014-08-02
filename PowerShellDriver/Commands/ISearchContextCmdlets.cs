@@ -150,6 +150,7 @@ namespace PowerShellDriver.Commands
 
     #region ISearchContext Cmdlets
     [Cmdlet(VerbsCommon.Find, "WebElements")]
+    [OutputType(typeof(ReadOnlyCollection<IWebElement>))]
     public class FindElementsCmdlet : AbstractFindElemCmdlet
     {
         /// <summary>
