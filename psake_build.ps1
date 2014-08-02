@@ -2,16 +2,19 @@
 Build script for PoShDriver
 It builds the new DLL using MSBuild, runs unit/integration tests in Pester, and register the newly built DLL to the system PowerShell
 
-NOTE: This script should be run as an administrator, so that you can use installutil
+NOTE: This script must be run as an administrator, so that you can use installutil
 
 Author: Matt Black
 ###################>
 
 
 
-##CONVENIENCE FUNCTIONS FOR THE SCRIPT
+<##################
+CONVENIENCE FUNCTIONS FOR THE SCRIPT
+##################>
+
 #get the directory the script is executing from (root directory of project)
-function Get-ScriptDirectory 
+function Get-ScriptDirectory
 {
     Split-Path -Parent $PSCommandPath
 }
@@ -44,6 +47,10 @@ function Test-AlreadyRegistered
         return $true
     }
 }
+
+<###############
+THE BUILD SCRIPT
+###############>
 
 $framework = '4.0'
 $base_dir = Get-ScriptDirectory

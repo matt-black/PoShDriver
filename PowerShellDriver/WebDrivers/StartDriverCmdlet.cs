@@ -7,6 +7,7 @@ using System.Management.Automation;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
 
 namespace PowerShellDriver.WebDrivers
 {
@@ -31,6 +32,7 @@ namespace PowerShellDriver.WebDrivers
         [Parameter(ParameterSetName="chrome",
             Mandatory=false,
             Position=1)]
+        [ValidateNotNull]
         public String Path
         {
             get { return _pathToChromeDriver; }
@@ -41,6 +43,7 @@ namespace PowerShellDriver.WebDrivers
         [Parameter(ParameterSetName = "chrome",
             Mandatory = false,
             Position = 2)]
+        [ValidateNotNull]
         public ChromeOptions ChromeOptions
         {
             get { return _chromeOptions; }
@@ -66,6 +69,7 @@ namespace PowerShellDriver.WebDrivers
         [Parameter(ParameterSetName="firefox",
             Mandatory=false,
             Position=2)]
+        [ValidateNotNull]
         public FirefoxProfile Profile
         {
             get { return _ffProfile; }
@@ -76,6 +80,7 @@ namespace PowerShellDriver.WebDrivers
         [Parameter(ParameterSetName="firefox",
             Mandatory=false,
             Position=1)]
+        [ValidateNotNull]
         public FirefoxBinary Binary
         {
             get { return _ffBinary; }
@@ -125,6 +130,35 @@ namespace PowerShellDriver.WebDrivers
         }
         #endregion
 
+        /// <summary>
+        /// Form a <see cref="DesiredCapabilities"/> object if the -Remote switch is specified
+        /// </summary>
+        protected override void ProcessRecord()
+        {
+            if (_isRemote) //it's a RemoteWebDriver
+            {
+                DesiredCapabilities remoteCaps = this.MakeCapabilities();
+            }
+        }
 
+        /// <summary>
+        /// Creates a <see cref="DesiredCapabilities"/> object based on the properties of the 
+        /// </summary>
+        /// <returns></returns>
+        private DesiredCapabilities MakeCapabilities()
+        {
+            //get the browser switch to initialize the object
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            if (_isFirefox)
+            {
+                capabilities.SetCapability(CapabilityType.BrowserName, "firefox");
+            }
+            else if (_isChrome)
+            {
+                capabilities.SetCapability(CapabilityType.BrowserName, "chrome");
+            }
+
+            return capabilities;
+        }
     }
 }
