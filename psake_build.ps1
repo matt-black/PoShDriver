@@ -19,7 +19,10 @@ function Get-ScriptDirectory
     Split-Path -Parent $PSCommandPath
 }
 
-#test whether the user running the script is an admin
+<#
+.Synopsis
+   test whether the user running the script is an admin
+#>
 function Test-Admin
 {
     If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) 
@@ -34,7 +37,11 @@ function Test-Admin
     }
 }
 
-#test if the PoShDriver is already registered with PowerShell on this system
+<#
+.Synopsis
+   test if the PoShDriver is already registered with PowerShell on this system
+#>
+
 function Test-AlreadyRegistered
 {
     $driverExist = Get-PSSnapin -Registered | Where-Object { $_.Name -eq "PoShDriver" }

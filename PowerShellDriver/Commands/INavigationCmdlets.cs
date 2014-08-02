@@ -13,7 +13,7 @@ namespace PowerShellDriver.Commands
     /// Represents a Cmdlet that takes in a <see cref="INavigation"/> object and acts on that object's methods
     /// to move it through a browser's history or to another webpage
     /// </summary>
-    public class INavigationCmdlet : PSCmdlet
+    public abstract class INavigationCmdlet : PSCmdlet
     {
         /// <summary>
         /// The <see cref="INavigation"/> object to operate on
@@ -55,7 +55,6 @@ namespace PowerShellDriver.Commands
     /// Move back a single entry in the browser's history
     /// </summary>
     [Cmdlet(VerbsCommon.Move, "BackInBrowserHistory")]
-    [OutputType(typeof(INavigation))]
     public class MoveBackInBrowserHistoryCmdlet : INavigationCmdlet
     {
         protected override void BeginProcessing()
@@ -73,7 +72,6 @@ namespace PowerShellDriver.Commands
     /// Move a single "item" forward in the browser's history
     /// </summary>
     [Cmdlet(VerbsCommon.Move, "ForwardInBrowserHistory")]
-    [OutputType(typeof(INavigation))]
     public class MoveForwardInBrowserHistoryCmdlet : INavigationCmdlet
     {
         protected override void BeginProcessing()
@@ -91,7 +89,6 @@ namespace PowerShellDriver.Commands
     /// Refreshes the current webpage
     /// </summary>
     [Cmdlet(VerbsData.Update, "CurrentWebPage")]
-    [OutputType(typeof(INavigation))]
     public class UpdateCurrentWebPageCmdlet : INavigationCmdlet
     {
         protected override void BeginProcessing()
@@ -109,7 +106,6 @@ namespace PowerShellDriver.Commands
     /// Load a new web page in the current browser window
     /// </summary>
     [Cmdlet(VerbsCommon.Move, "BrowserToUrl")]
-    [OutputType(typeof(INavigation))]
     public class MoveBrowserToUrlCmdlet : INavigationCmdlet
     {
         /// <summary>
