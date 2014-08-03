@@ -27,4 +27,22 @@
             $elem.GetCssValue("color") | Should Be "red"
         }#>
     }
+
+    Context "specifying -PassThru parameter" {
+        #setup the driver
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnitWithJavaScript()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
+        $driver.Manage().Timeouts().SetScriptTimeout([System.TimeSpan]::FromSeconds(2))
+
+        It "writes to the script_result variable" {
+            $driver | Invoke-JavaScriptExecution "return document.title" -PassThru
+            $script_result | Should Be $driver.ExecuteScript("return document.title")
+        }
+        It "passes the driver through" {
+            $elem = $driver | Invoke-JavaScriptExecution "return document.title" -PassThru | Find-WebElement "h1" -ByTagName
+            $elem_dotNet = $driver.FindElementByTagName("h1")
+            $elem | Should Be $elem_dotNet
+        }
+    }
 }
