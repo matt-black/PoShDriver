@@ -118,17 +118,19 @@ namespace PowerShellDriver.Commands
 
         protected override void ProcessRecord()
         {
-            var propertyValue = GetElementProperty(this.ParameterSetName);
+            object propertyValue;
+            if (this.ParameterSetName == "All")
+                propertyValue = this.MakePropertiesDict();
+            else
+                propertyValue = this.GetElementProperty(this.ParameterSetName);
+
             if (_passThru)
             {
-                this.WritePropToVariable();
-            }
-            else
-            {
-                this.WriteObject(propertyValue);
+                this.WritePropToPSVariable(propertyValue);
+                this.WriteObject(_webElement);
                 return;
             }
-            this.WriteObject(_webElement);
+            this.WriteObject(propertyValue);
         }
 
         #region Private support methods
@@ -152,12 +154,12 @@ namespace PowerShellDriver.Commands
         /// <summary>
         /// Writes the property specified by the Cmdlet's parameter to a variable in the current runspace
         /// </summary>
-        private void WritePropToVariable()
+        private void WritePropToPSVariable(object value)
         {
             StringBuilder varName = new StringBuilder("elementProperty_");
             varName.Append(this.ParameterSetName);
-            var varValue = GetElementProperty(this.ParameterSetName);
-            this.SessionState.PSVariable.Set(varName.ToString(), varValue);
+
+            this.SessionState.PSVariable.Set(varName.ToString(), value);
         }
 
         /// <summary>
@@ -303,31 +305,7 @@ namespace PowerShellDriver.Commands
 
         protected override void ProcessRecord()
         {
-            switch (this.ParameterSetName)
-            {
-                case "Clear":
-                    _webElement.Clear();
-                    return;
-                case "Click":
-                    _webElement.Click();
-                    return;
-                case "GetAttribute":
-                    this.WriteObject(
-                        _webElement.GetAttribute(_stringParam.Parameter));
-                    return;
-                case "GetCssValue":
-                    this.WriteObject(
-                        _webElement.GetCssValue(_stringParam.Parameter));
-                    return;
-                case "SendKeys":
-                    _webElement.SendKeys(_stringParam.Parameter);
-                    return;
-                case "Submit":
-                    _webElement.Submit();
-                    return;
-                default:
-                    throw new Exception("Invalid method specified");
-            }
+
         }
     }
 }
