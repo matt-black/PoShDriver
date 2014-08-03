@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Management.Automation;
 
@@ -109,6 +110,7 @@ namespace PowerShellDriver.Commands
         /// If true, writes the <see cref="IWebElement"/> input to the pipeline
         /// If false (unspecified), it writes the property to the pipeline
         /// </summary>
+        [Parameter(Mandatory=false)]
         public SwitchParameter PassThru
         {
             get { return _passThru; }
@@ -305,7 +307,47 @@ namespace PowerShellDriver.Commands
 
         protected override void ProcessRecord()
         {
+            object returnVal; //the return value of the function
+            if (_reqStringParam) //the method needs a string parameter
+            {
+                returnVal = _webElement.GetType().InvokeMember(
+                    this.ParameterSetName,
+                    BindingFlags.InvokeMethod,
+                    null,
+                    _webElement,
+                    new Object[] { _stringParam.Parameter });
+            }
+            else
+            {
+                returnVal = _webElement.GetType().InvokeMember(
+                    this.ParameterSetName,
+                    BindingFlags.InvokeMethod,
+                    null,
+                    _webElement,
+                    new Object[] { });
+            }
 
+            if (_passThru)
+            {
+                WriteValToPSVariable(returnVal);
+                this.WriteObject(_webElement);
+                return;
+            }
+            this.WriteObject(returnVal);
         }
+
+        #region Private support methods
+        /// <summary>
+        /// Writes the value provided to a variable in the current powershell
+        /// </summary>
+        private void WriteValToPSVariable(object value)
+        {
+            StringBuilder varName = new StringBuilder("element{0}_");
+            varName.Append(_stringParam.Parameter);
+
+            this.SessionState.PSVariable.Set(
+                string.Format(varName.ToString(), this.ParameterSetName), value);
+        }
+        #endregion
     }
 }
