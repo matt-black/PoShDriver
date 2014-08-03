@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\IJavaScriptExecutorCmdlet.cs" />
     <Compile Include="Commands\INavigationCmdlets.cs" />
     <Compile Include="Commands\ISearchContextCmdlets.cs" />
     <Compile Include="Commands\IWebElementCmdlets.cs" />
