@@ -102,7 +102,6 @@ namespace PowerShellDriver.WebDrivers
         /// Implements the IDynamicParameters interface
         /// Retrieves <see cref="RemoteParameters"/> if the -Remote switch is specified
         /// </summary>
-        /// <returns></returns>
         public object GetDynamicParameters()
         {
             if (_isRemote)

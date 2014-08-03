@@ -294,7 +294,7 @@ namespace PowerShellDriver.Commands
         /// </summary>
         public class StringParam
         {
-            [Parameter(Mandatory=true, 
+            [Parameter(Mandatory=true,
                 Position=1)]
             [ValidateNotNull]
             public String Parameter
@@ -342,7 +342,7 @@ namespace PowerShellDriver.Commands
         /// </summary>
         private void WriteValToPSVariable(object value)
         {
-            StringBuilder varName = new StringBuilder("element{0}_");
+            StringBuilder varName = new StringBuilder("elementMethod_{0}_");
             varName.Append(_stringParam.Parameter);
 
             this.SessionState.PSVariable.Set(

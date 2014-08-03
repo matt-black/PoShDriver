@@ -101,4 +101,48 @@ Describe "Invoke-WebElementMethod Cmdlet" {
 
         $driver.Quit()
     }
+
+    Context "Checking parameters" {
+        #setup the driver
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
+        $elem = $driver.FindElementById("i_am_a_textbox")
+
+        It "can only invoke one method at a time" {
+            PesterThrow {
+                $elem | Invoke-WebElementMethod -Clear -Click
+            } | Should Be $true
+        }
+        It "throws if req'd string param not supplied" {
+            PesterThrow {
+                $elem | Invoke-WebElementMethod -SendKeys
+            } | Should Be $true
+        }
+
+        $driver.Quit()
+    }
+
+    Context "PassThru parameter verification" {
+        #setup the driver
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")   #load the test page
+        $elem = $driver.FindElementById("i_am_a_textbox")
+
+        It "can write to the current PS runspace" {
+            $elem | Invoke-WebElementMethod -GetAttribute "value" -PassThru | Invoke-WebElementMethod -Click
+            $elementMethod_GetAttribute_value | Should Be "i has no focus"
+        }
+        It "can pass the WebElement through with stringparams first" {
+            $newelem = $driver.FindElementByName("lastname")
+            $newelem | Invoke-WebElementMethod -SendKeys "new text" -PassThru | Invoke-WebElementMethod -Clear
+            $newelem.GetAttribute("value") | Should Be ([System.String]::Empty)
+        }
+        It "can pass the WebElement through without stringparams first" {
+            $elem | Invoke-WebElementMethod -Clear -PassThru | Invoke-WebElementMethod -SendKeys "new value"
+            $elem.GetAttribute("value") | Should Be "new value"
+        }
+        $driver.Quit()
+    }
 }
