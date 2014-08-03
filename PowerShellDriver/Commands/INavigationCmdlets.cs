@@ -21,12 +21,12 @@ namespace PowerShellDriver.Commands
         [Parameter(Mandatory = true,
             ValueFromPipeline = true)]
         [ValidateNotNull]
-        public RemoteWebDriver Navigator
+        public INavigation Navigator
         {
             get { return _navigator; }
             set { _navigator = value; }
         }
-        protected RemoteWebDriver _navigator;
+        protected INavigation _navigator;
 
         /// <summary>
         /// The navigation action to take
@@ -60,7 +60,7 @@ namespace PowerShellDriver.Commands
         protected override void BeginProcessing()
         {
             this.navigationAction = 
-                () => _navigator.Navigate().Back();
+                () => _navigator.Back();
         }
         protected override void ProcessRecord()
         {
@@ -77,7 +77,7 @@ namespace PowerShellDriver.Commands
         protected override void BeginProcessing()
         {
             this.navigationAction =
-                () => _navigator.Navigate().Forward();
+                () => _navigator.Forward();
         }
         protected override void ProcessRecord()
         {
@@ -94,7 +94,7 @@ namespace PowerShellDriver.Commands
         protected override void BeginProcessing()
         {
             this.navigationAction =
-                () => _navigator.Navigate().Refresh();
+                () => _navigator.Refresh();
         }
         protected override void ProcessRecord()
         {
@@ -124,7 +124,7 @@ namespace PowerShellDriver.Commands
         protected override void BeginProcessing()
         {
             this.navigationAction =
-                () => _navigator.Navigate().GoToUrl(_url);
+                () => _navigator.GoToUrl(_url);
         }
         protected override void ProcessRecord()
         {

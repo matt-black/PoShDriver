@@ -8,13 +8,13 @@
 
         It "matches .NET for back w/o history" {
             $dotNet = PesterThrow { $driver.Navigate().Back() }
-            $poSh = PesterThrow { $driver | Move-BackInBrowserHistory }
+            $poSh = PesterThrow { $driver.Navigate() | Move-BackInBrowserHistory }
             $poSh | Should Be $dotNet
         }
         It "can navigate back in browser history" {
             $origTitle = $driver.Title
             $driver.Navigate().GoToUrl($website)
-            Move-BackInBrowserHistory -Navigator $driver
+            Move-BackInBrowserHistory -Navigator $driver.Navigate()
             $driver.Title | Should Be $origTitle
         }
 
@@ -30,14 +30,14 @@
         #tests
         It "throws if there is no forward history" {
             $dotNet = PesterThrow { $driver.Navigate().Forward() }
-            $poSh = PesterThrow { $driver | Move-ForwardInBrowserHistory }
+            $poSh = PesterThrow { $driver.Navigate() | Move-ForwardInBrowserHistory }
             $poSh | Should Be $dotNet
         }
         It "can navigate forward in browser history" {
             $driver.Navigate().GoToUrl($website)
             $siteTitle = $driver.Title
             $driver.Navigate().Back()
-            $driver | Move-ForwardInBrowserHistory
+            $driver.Navigate() | Move-ForwardInBrowserHistory
             $driver.Title | Should Be $siteTitle
         }
 
@@ -57,7 +57,7 @@
             $siteTitle = $driver.Title
             $driver.Navigate().Back()
             #go back and then use our cmdlet to get back to the original page
-            $driver | Move-BrowserToUrl $website
+            $driver.Navigate() | Move-BrowserToUrl $website
             $driver.Title | Should Be $siteTitle
         }
 

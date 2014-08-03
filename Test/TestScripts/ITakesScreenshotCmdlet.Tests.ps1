@@ -16,14 +16,14 @@
         <#It "can return a screenshot as a Byte Array" {
             $poShShot = $driver | Get-WebPageScreenshot -AsByteArray
             $poShShot | Should Be $dotNetShot.AsByteArray
-        }#>
+        }
         It "can save the screenshot to a file" {
             $driver | Get-WebPageScreenshot -SaveAsFile "poShShot.jpeg" ([System.Drawing.Imaging.ImageFormat]::Jpeg)
             $poShShot_byteArray = [System.IO.File]::ReadAllBytes("poShShot.jpeg")
             $poShShot_byteArray | Should Be $dotNetShot.AsByteArray
         }
         #remove the poShShot file
-        Remove-Item "poShShot.jpeg"
+        Remove-Item "poShShot.jpeg"#>
 
         $driver.Quit()
     }
