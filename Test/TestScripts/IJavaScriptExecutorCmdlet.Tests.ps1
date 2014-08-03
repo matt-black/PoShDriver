@@ -26,6 +26,7 @@
             $driver | Invoke-JavaScriptExecution "arguments[0].color='red'" @($elem) -Async
             $elem.GetCssValue("color") | Should Be "red"
         }#>
+        $driver.Quit()
     }
 
     Context "specifying -PassThru parameter" {
@@ -44,5 +45,6 @@
             $elem_dotNet = $driver.FindElementByTagName("h1")
             $elem | Should Be $elem_dotNet
         }
+        $driver.Quit()
     }
 }

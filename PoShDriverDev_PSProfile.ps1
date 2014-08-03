@@ -16,9 +16,6 @@ Add-Type -Path $poshRootDir\packages\Selenium.Support.2.42.0\lib\net40\WebDriver
 #add Psake and Pester modules, along with custom TestUtil module
 Import-Module $poshRootDir\packages\psake.4.3.2\tools\psake.psm1
 Import-Module $poshRootDir\packages\Pester.2.1.0\tools\Pester.psm1
-Import-Module $poshRootDir\Test\PoShDriverTestUtilities.psm1
 
 #add Chromedriver to the path
 $env:Path += [System.String]::Format(";{0}\packages\WebDriver.ChromeDriver.win32.2.10.0.0\content", $poshRootDir)
-
-Clear-Host
