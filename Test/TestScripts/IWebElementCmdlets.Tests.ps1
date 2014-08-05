@@ -37,7 +37,40 @@
         $driver.Quit()
     }
     Context "Get all properties" {
+        #setup the driver
+        $htmlUnitCaps = [OpenQA.Selenium.Remote.DesiredCapabilities]::HtmlUnit()
+        $driver = New-Object OpenQA.Selenium.Remote.RemoteWebDriver -ArgumentList @($htmlUnitCaps)
+        $driver.Navigate().GoToUrl("file:///C:/Users/Matt/dotNet/PowerShellDriver/Test/Resources/testpage.html")  #load the page
 
+        #form the hashtable
+        $formElem = $driver.FindElementByName("cycling")
+        $formElemPropsHT = @{"Displayed"=$formElem.Displayed;
+            "Enabled"=$formElem.Enabled;
+            "Location"=$formElem.Location;
+            "Selected"=$formElem.Selected;
+            "Size"=$formElem.Size;
+            "TagName"=$formElem.TagName;
+            "Text"=$formElem.Text}
+
+        It "returns a hashtable" {
+            $formElemHT = $formElem | Get-WebElementProperty -All
+            $formElemHT.GetType() | Should Be $formElemPropsHT.GetType()
+        }
+        It "matches all the properties of the .NET bindings" {
+            $formElemPropsHT_poSh = $formElem | Get-WebElementProperty -All
+            foreach ($key in $formElemPropsHT.Keys)
+            {
+                $formElemPropsHT_poSh[$key] | Should Be $formElemPropsHT[$key]
+            }
+        }
+        It "supports the -PassThru param" {
+            $formElem | Get-WebElementProperty -All -PassThru
+            foreach ($key in $formElemPropsHT.Keys)
+            {
+                $elementProperty_All[$key] | Should Be $formElemPropsHT[$key]
+            }
+        }
+        $driver.Quit()  #quit the driver after test completion
     }
     Context "Get properties while using PassThru" {
         #setup the driver
@@ -54,6 +87,13 @@
         It "passes the webelement through" {
             $testprop = $formElem | Get-WebElementProperty -Displayed -PassThru | Get-WebElementProperty -Enabled
             $testprop | Should Be $formElem.Enabled
+        }
+        It "overwrites the same property" {
+            $formElem | Get-WebElementProperty -Displayed -PassThru
+            #elementProperty_Displayed should be True
+            $formElem2 = $driver.FindElementById("invisible div")
+            $formElem2 | Get-WebElementProperty -Displayed -PassThru
+            $elementProperty_Displayed | Should Be $formElem2.Displayed
         }
 
         $driver.Quit()

@@ -141,7 +141,7 @@ namespace PowerShellDriver.Commands
         /// this Cmdlet had passed to it
         /// </summary>
         /// <returns>A dictionary of properties</returns>
-        private Dictionary<string, object> MakePropertiesDict()
+        private Hashtable MakePropertiesDict()
         {
             Dictionary<string, object> propsDict = new Dictionary<string, object>();
 
@@ -150,7 +150,7 @@ namespace PowerShellDriver.Commands
             {
                 propsDict.Add(prop.Name, prop.GetValue(_webElement, null));
             }
-            return propsDict;
+            return new Hashtable(propsDict);
         }
 
         /// <summary>
