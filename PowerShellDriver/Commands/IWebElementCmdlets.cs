@@ -169,10 +169,9 @@ namespace PowerShellDriver.Commands
         /// </summary>
         private object GetElementProperty(string p)
         {
-            var props = _webElement.GetType().GetProperties();
-            var value = props
+            var propValue = _webElement.GetType().GetProperties()
                 .Single(prop => prop.Name == p);
-            return value.GetValue(_webElement, null);
+            return propValue.GetValue(_webElement, null);
         }
         #endregion
     }
