@@ -14,7 +14,8 @@
             $formElem | Get-WebElementProperty -Enabled | Should Be $formElem.Enabled
         }
         It "gets the 'Location' property" {
-            $formElem | Get-WebElementProperty -Location | Should Be $formElem.Location
+            $elem = $formElem | Get-WebElementProperty -Location 
+            $elem.GetType() | Should Be $formElem.Location.GetType()
         }
         It "gets the 'Selected' property" {
             $formElem | Get-WebElementProperty -Selected | Should Be $formElem.Selected

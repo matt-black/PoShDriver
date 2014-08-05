@@ -171,9 +171,8 @@ namespace PowerShellDriver.Commands
         {
             var props = _webElement.GetType().GetProperties();
             var value = props
-                .Where(prop => prop.Name == p)
-                .Select(prop => prop.GetValue(_webElement, null));
-            return value;
+                .Single(prop => prop.Name == p);
+            return value.GetValue(_webElement, null);
         }
         #endregion
     }
