@@ -132,7 +132,7 @@ Describe "Invoke-WebElementMethod Cmdlet" {
 
         It "can write to the current PS runspace" {
             $elem | Invoke-WebElementMethod -GetAttribute "value" -PassThru | Invoke-WebElementMethod -Click
-            $elementMethod_GetAttribute_value | Should Be "i has no focus"
+            $elementMethod_GetAttribute | Should Be "i has no focus"
         }
         It "can pass the WebElement through with stringparams first" {
             $newelem = $driver.FindElementByName("lastname")

@@ -342,8 +342,7 @@ namespace PowerShellDriver.Commands
         /// </summary>
         private void WriteValToPSVariable(object value)
         {
-            StringBuilder varName = new StringBuilder("elementMethod_{0}_");
-            varName.Append(_stringParam.Parameter);
+            StringBuilder varName = new StringBuilder("elementMethod_{0}");
 
             this.SessionState.PSVariable.Set(
                 string.Format(varName.ToString(), this.ParameterSetName), value);
