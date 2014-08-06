@@ -21,11 +21,16 @@ namespace PowerShellDriver.Commands
         [Parameter(Mandatory = true,
             ValueFromPipeline = true)]
         [ValidateNotNull]
-        public INavigation Navigator
+        public RemoteWebDriver Driver
         {
-            get { return _navigator; }
-            set { _navigator = value; }
+            get { return _driver; }
+            set 
+            {
+                _driver = value;
+                _navigator = _driver.Navigate(); 
+            }
         }
+        protected RemoteWebDriver _driver;
         protected INavigation _navigator;
 
         /// <summary>
