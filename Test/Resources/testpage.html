@@ -14,7 +14,8 @@
 
 	<h1>PoShDriver Test Page</h1>
     <h2>This is a page for testing PoShDriver functionality</h2>
-    <a href="http://github.com/matt-black/PoShDriver">The original PoShDriver repo!</a><br><a href="#">Road to nowhere</a>
+    <a href="http://github.com/matt-black/PoShDriver">The original PoShDriver repo!</a> | <a href="http://github.com/matt-black/PoShDriver" target=_blank>target=_blank</a>
+    <br><a href="#">Road to nowhere</a>
 
     <form id="basic-form">
         <h3>Example form</h3>
@@ -39,10 +40,17 @@
 
     <div id="alerts">
         <h3>Alert button examples</h3>
-        <button type="button" onclick="alertBox()">Alert Box</button>
-        <button type="button" onclick="confirmBox()">Confirm Box</button>
-        <button type="button" onclick="promptBox()">Prompt Box</button><br>
+        <button id="alert_button" type="button" onclick="alertBox()">Alert Box</button>
+        <button id="confirmBox_button" type="button" onclick="confirmBox()">Confirm Box</button>
+        <button id="promptBox_button"type="button" onclick="promptBox()">Prompt Box</button><br>
         <input id="alert_textbox" type="text">
+    </div>
+
+    <div class="iframe_div">
+        <h3>This is an iFrame</h3>
+        <iframe id="google_iframe" src="http://google.com">
+            <p>Browser doesn't support iframes.</p>
+        </iframe>
     </div>
     <div class="saucelabsrip">
         <h3>This section is ripped from <a href="https://saucelabs.com/test/guinea-pig">this page</a></h3>

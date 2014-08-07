@@ -8,7 +8,7 @@ using OpenQA.Selenium;
 
 namespace PowerShellDriver.WebDriver
 {
-    [Cmdlet(VerbsOther.Use, "DriverInterface")]
+    [Cmdlet(VerbsOther.Use, "DriverAsInterface")]
     public class UseDriverInterfaceCmdlet : PSCmdlet
     {
         [Parameter(Mandatory=true,
@@ -20,27 +20,27 @@ namespace PowerShellDriver.WebDriver
         }
         private IWebDriver _webDriver;
 
-        [Parameter(ParameterSetName="Navigate",
+        [Parameter(ParameterSetName="INavigation",
             Mandatory=true)]
-        public SwitchParameter Navigate
+        public SwitchParameter INavigation
         {
             get { return _iNavigation; }
             set { _iNavigation = value; }
         }
         private bool _iNavigation;
 
-        [Parameter(ParameterSetName="Manage",
+        [Parameter(ParameterSetName="IOptions",
             Mandatory=true)]
-        public SwitchParameter Manage
+        public SwitchParameter IOptions
         {
             get { return _iOptions; }
             set { _iOptions = value; }
         }
         private bool _iOptions;
 
-        [Parameter(ParameterSetName="SwitchTo",
+        [Parameter(ParameterSetName="ITargetLocator",
             Mandatory=true)]
-        public SwitchParameter SwitchTo
+        public SwitchParameter ITargetLocator
         {
             get { return _iTargetLocator; }
             set { _iTargetLocator = value; }
@@ -51,13 +51,13 @@ namespace PowerShellDriver.WebDriver
         {
             switch (this.ParameterSetName)
             {
-                case "Navigate":
+                case "INavigation":
                     this.WriteObject(_webDriver.Navigate());
                     break;
-                case "Manage":
+                case "IOptions":
                     this.WriteObject(_webDriver.Manage());
                     break;
-                case "SwitchTo":
+                case "ITargetLocator":
                     this.WriteObject(_webDriver.SwitchTo());
                     break;
                 default:

@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Commands\IJavaScriptExecutorCmdlet.cs" />
     <Compile Include="Commands\INavigationCmdlets.cs" />
+    <Compile Include="Commands\InvokeIAlertCmdlet.cs" />
     <Compile Include="Commands\ISearchContextCmdlets.cs" />
     <Compile Include="Commands\ITakesScreenshotCmdlet.cs" />
     <Compile Include="Commands\ITargetLocatorCmdlets.cs" />
