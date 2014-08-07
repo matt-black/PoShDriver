@@ -46,6 +46,15 @@ namespace PowerShellDriver.Commands
         }
         private bool _dismiss;
 
+        [Parameter(ParameterSetName="TextProp",
+            Mandatory=true)]
+        public SwitchParameter GetAlertText
+        {
+            get { return _getAlertText; }
+            set { _getAlertText = value; }
+        }
+        private bool _getAlertText;
+
         [Parameter(ParameterSetName = "SendKeys",
             Mandatory = true)]
         public SwitchParameter SendKeys
@@ -78,6 +87,9 @@ namespace PowerShellDriver.Commands
                     break;
                 case "SendKeys":
                     _alert.SendKeys(_text);
+                    break;
+                case "TextProp":
+                    this.WriteObject(_alert.Text);
                     break;
                 default:
                     throw new Exception("did not specify a valid parameter set");
