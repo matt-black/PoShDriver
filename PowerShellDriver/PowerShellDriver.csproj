@@ -59,6 +59,7 @@
     <Compile Include="Commands\ITakesScreenshotCmdlet.cs" />
     <Compile Include="Commands\ITargetLocatorCmdlets.cs" />
     <Compile Include="Commands\IWebElementCmdlets.cs" />
+    <Compile Include="Commands\IWebDriverCmdlets.cs" />
     <Compile Include="PoShDriverSnapin.cs">
       <SubType>Component</SubType>
     </Compile>
